@@ -1,0 +1,994 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "12ddc155-5fe4-45a3-8eed-52e210800e74",
+              "name": "News Title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "9e1d2ed2-453a-4cfb-b1a2-8ed979e9ce3f",
+              "name": "Author Name",
+              "value": "={{ $json.author }}",
+              "type": "string"
+            },
+            {
+              "id": "731f9b8b-9aac-40ca-9bdc-8f07464f7a61",
+              "name": "Date of Publication",
+              "value": "={{ $json.publishedAt }}",
+              "type": "string"
+            },
+            {
+              "id": "ec77f9ed-9dce-49f8-ba84-bf64e94dae1b",
+              "name": "Article Content",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "70a68312-16ef-4302-a586-37cc461a6c13",
+              "name": "Article important metadata",
+              "value": "={{ $json.source }}",
+              "type": "object"
+            },
+            {
+              "id": "6e25a99e-8b39-4174-82b6-7d5a534125e5",
+              "name": "url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            },
+            {
+              "id": "7c9745f0-ff88-41f3-99d6-3ba7b9ac5b0b",
+              "name": "AI Summary",
+              "value": "\"\"",
+              "type": "string"
+            },
+            {
+              "id": "663775fb-288c-4b0b-bafb-1467b570cfbb",
+              "name": "WhatsApp Sent At",
+              "value": "\"\"",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        -200
+      ],
+      "id": "5aa83bb6-94cb-4de6-b495-4e02c6fd7f75",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        448,
+        -320
+      ],
+      "id": "4ef2c1be-8b1b-449e-b491-9120f8e8b31a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg",
+          "mode": "list",
+          "cachedResultName": "NEWS PUBLISHED",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "News Title": "={{ $json['News Title'] }}",
+            "Author Name": "={{ $json['Author Name'] }}",
+            "Date of Publication": "={{ $json['Date of Publication'] }}",
+            "Article Content": "={{ $json['Article Content'] }}",
+            "url": "={{ $json.url }}",
+            "Article important metadata": "={{ $json['Article important metadata'] }}",
+            "WhatsApp Sent At": "={{$now.toISO()}}\n",
+            "AI Summary": "={{ $json['AI Summary'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "News Title",
+              "displayName": "News Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Author Name",
+              "displayName": "Author Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date of Publication",
+              "displayName": "Date of Publication",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Article Content",
+              "displayName": "Article Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Article important metadata",
+              "displayName": "Article important metadata",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AI Summary",
+              "displayName": "AI Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WhatsApp Sent At",
+              "displayName": "WhatsApp Sent At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1120,
+        -440
+      ],
+      "id": "bcd4034b-64f3-4b47-99ff-9d39f4e51c06",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZTwCGzEXLdBVoANi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1696,
+        -440
+      ],
+      "id": "a3cf4226-7ecc-48d2-b654-4f7bfd05ce47",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "929914623540583",
+        "recipientPhoneNumber": "+923161522086",
+        "textBody": "={{$json.wa_text}}\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        24
+      ],
+      "id": "ad260453-9013-4e52-969b-190f72f839a8",
+      "name": "Send message",
+      "webhookId": "2893430f-a2c4-4277-b3d8-03f1823d1ba6",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "3vT36z5DQEXtXFxo",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -448,
+        24
+      ],
+      "id": "1efb6722-fd5d-44c5-afed-b4265c12b035",
+      "name": "WhatsApp Trigger",
+      "webhookId": "8471126d-ee88-4b9a-bcc7-f3556f9bbdc1",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "cFcBpmslfYvPYGki",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg",
+          "mode": "list",
+          "cachedResultName": "NEWS PUBLISHED",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit#gid=0"
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -224,
+        24
+      ],
+      "id": "7c0bbc88-3a3f-4aea-b2bd-ddcc83e577a3",
+      "name": "Get row(s) in sheet1",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZTwCGzEXLdBVoANi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0eca593b-300a-40af-a8be-2cacc6a4856a",
+              "name": "keyword",
+              "value": "={{ $json.body.keyword }}",
+              "type": "string"
+            },
+            {
+              "id": "b3015c84-3c33-4fbe-aef0-07ad72746eff",
+              "name": "language",
+              "value": "={{ $json.body.language }}",
+              "type": "string"
+            },
+            {
+              "id": "d9a71bbb-3ad8-4ac9-8f27-eb507fc21d93",
+              "name": "country",
+              "value": "={{ $json.body.country }}",
+              "type": "string"
+            },
+            {
+              "id": "2c66e15a-ad09-4832-b28a-375daf6a1363",
+              "name": "from",
+              "value": "={{ $json.body.from }}",
+              "type": "string"
+            },
+            {
+              "id": "c84a501c-249a-4431-b53a-0552d2ca107d",
+              "name": "to",
+              "value": "={{ $json.body.to }}",
+              "type": "string"
+            },
+            {
+              "id": "1931bbca-97cb-4d72-8c4e-bdc8e499c8de",
+              "name": "maxArticles",
+              "value": "={{ $json.body.maxArticles }}",
+              "type": "number"
+            },
+            {
+              "id": "4d0e89d0-d485-4de5-b494-c246d1d23968",
+              "name": "whatsappTo",
+              "value": "={{ $json.body.whatsappTo }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        -320
+      ],
+      "id": "d80d86f1-7838-4a6f-abba-f21a694588d2",
+      "name": "Clean Default Inputs"
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "={{ $json.keyword }}"
+            },
+            {
+              "name": "language",
+              "value": "={{ $json.language }}"
+            },
+            {
+              "name": "=from",
+              "value": "={{ $json.from }}"
+            },
+            {
+              "name": "to",
+              "value": "={{ $json.to }}"
+            },
+            {
+              "name": "pagesize",
+              "value": "={{ $json.maxArticles }}"
+            },
+            {
+              "name": "sortby",
+              "value": "=publishedAt"
+            },
+            {
+              "name": "apiKey",
+              "value": "=51585f7729704c2cbef91aad98987e34"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        -320
+      ],
+      "id": "3f37266e-37ea-4599-9276-28b04ca22b01",
+      "name": "News API Integration"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "articles",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -320
+      ],
+      "id": "3a251f84-4055-45b8-9cd8-e02d90ca4424",
+      "name": "Split Articles"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "=You are a professional news summarizer. Your job is to rewrite the provided news article into a simple, clear, easy-to-understand summary for a general audience.\nRules:\n\nUse plain language (no jargon). If a technical term is unavoidable, explain it in 1 short phrase.\n\nDo NOT add new facts or assumptions. Only use the provided content.\n\nKeep the meaning accurate and neutral.\n\nOutput must be short and WhatsApp-friendly.\nOutput format (exact):\n\nSummary: 3–5 bullet points\n\nWhy it matters: 1 line\nLimit: 900 characters maximum"
+            },
+            {
+              "content": "=Summarize the following news article:\n\nTitle: {{$json[\"News Title\"]}}\n\nAuthor: {{$json[\"Author Name\"]}}\n\nDate: {{$json[\"Date of Publication\"]}}\n\nContent: {{$json[\"Article Content\"]}}\n\nMetadata: {{$json[\"Article important metadata\"]}}\n\nurl: {{ $json.url }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1344,
+        -368
+      ],
+      "id": "e4001765-68fd-4237-8e4a-f122c18a8820",
+      "name": "AI Summarization",
+      "credentials": {
+        "openAiApi": {
+          "id": "cLkw7mzYjW9hyZoj",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg",
+          "mode": "list",
+          "cachedResultName": "NEWS PUBLISHED",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "url",
+              "lookupValue": "={{ $json.url }}"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        672,
+        -512
+      ],
+      "id": "a364718a-b0d4-4323-8530-7854cff0ecfe",
+      "name": "Duplicate check(GET)",
+      "alwaysOutputData": false,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZTwCGzEXLdBVoANi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c2ac1eca-8d9c-4b0a-9d2d-26b48ef3ff4d",
+              "leftValue": "={{$items(\"Duplicate check(GET)\").length > 0}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        896,
+        -440
+      ],
+      "id": "e926464e-c149-4a80-a9c8-6f57b0dea70c",
+      "name": "duplicate(yes/no?)"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4df5db16-007b-4e6a-bdb7-ed3744b37292",
+              "name": "AI Summary",
+              "value": "={{ $json.output[0].content[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1920,
+        -440
+      ],
+      "id": "5ea1eb82-7ba6-4aa0-ab99-b1e4f77058db",
+      "name": "Set AI Summary field"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg",
+          "mode": "list",
+          "cachedResultName": "NEWS PUBLISHED",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fMmavUev147xsBOmk85M_BZUxAcgCSTOheP1xaVARwg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "AI Summary": "={{ $json['AI Summary'] }}",
+            "row_number": "=",
+            "url": "={{ $('Append row in sheet').item.json.url }}"
+          },
+          "matchingColumns": [
+            "url"
+          ],
+          "schema": [
+            {
+              "id": "News Title",
+              "displayName": "News Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Author Name",
+              "displayName": "Author Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Date of Publication",
+              "displayName": "Date of Publication",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Article Content",
+              "displayName": "Article Content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Article important metadata",
+              "displayName": "Article important metadata",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "url",
+              "displayName": "url",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AI Summary",
+              "displayName": "AI Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WhatsApp Sent At",
+              "displayName": "WhatsApp Sent At",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2144,
+        -440
+      ],
+      "id": "5f03ee4f-c258-4653-b02d-6cbd6305199d",
+      "name": "Append AI summary",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ZTwCGzEXLdBVoANi",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ebcd2ba3-8b05-4b18-8b2e-8590202c58df",
+              "name": "=wa_text",
+              "value": "=📰 News Title: {{$json[\"News Title\"]}}\n\n👤 Author Name: {{$json[\"Author Name\"]}}\n📅 Date of Publication: {{$json[\"Date of Publication\"]}}\n\n🧠 AI Summary:\n{{$json[\"AI Summary\"]}}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        24
+      ],
+      "id": "d1c57efa-5e16-496b-9673-fd6dbe56da4f",
+      "name": "set whatsapp text"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "news-request",
+        "options": {
+          "responseData": ""
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -448,
+        -320
+      ],
+      "id": "41e956a9-8848-4b5a-b239-802da0fb77ed",
+      "name": "User Input ( using postman)",
+      "webhookId": "a0999f5e-eefb-4b23-97a7-d8025c303b79"
+    }
+  ],
+  "pinData": {
+    "User Input ( using postman)": [
+      {
+        "json": {
+          "headers": {
+            "host": "shakeeldev.app.n8n.cloud",
+            "user-agent": "PostmanRuntime/7.51.0",
+            "content-length": "160",
+            "accept": "*/*",
+            "accept-encoding": "gzip, br",
+            "cache-control": "no-cache",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "54.86.50.139",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "US",
+            "cf-ray": "9bac1ab6327c1329-IAD",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-worker": "n8n.cloud",
+            "content-type": "application/json",
+            "postman-token": "73c7e851-6f09-40c4-bc00-ec293a5be0dc",
+            "x-forwarded-for": "54.86.50.139, 104.23.211.211",
+            "x-forwarded-host": "shakeeldev.app.n8n.cloud",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "traefik-prod-users-gwc-29-677bf4754f-xh5pd",
+            "x-is-trusted": "yes",
+            "x-real-ip": "54.86.50.139"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "keyword": "AI",
+            "language": "en",
+            "country": "us",
+            "from": "2026-01-01",
+            "to": "2026-01-08",
+            "maxArticles": 5,
+            "whatsappTo": "+923001234567"
+          },
+          "webhookUrl": "https://shakeeldev.app.n8n.cloud/webhook-test/news-request",
+          "executionMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "duplicate(yes/no?)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Duplicate check(GET)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "AI Summarization",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Set AI Summary field",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "set whatsapp text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Default Inputs": {
+      "main": [
+        [
+          {
+            "node": "News API Integration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News API Integration": {
+      "main": [
+        [
+          {
+            "node": "Split Articles",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Articles": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Summarization": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Duplicate check(GET)": {
+      "main": [
+        [
+          {
+            "node": "duplicate(yes/no?)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "duplicate(yes/no?)": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set AI Summary field": {
+      "main": [
+        [
+          {
+            "node": "Append AI summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append AI summary": {
+      "main": [
+        []
+      ]
+    },
+    "set whatsapp text": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "User Input ( using postman)": {
+      "main": [
+        [
+          {
+            "node": "Clean Default Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "47781e25-6ff0-48e2-87a7-fe3cd53549be",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "357d387b6249fda2483873594f242a66ff0c9858844cfe5943e9c99abba80c0a"
+  },
+  "id": "ZHdvdZHgqdwwMpJiziYso",
+  "tags": []
+}

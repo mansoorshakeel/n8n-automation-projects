@@ -1,0 +1,1649 @@
+{
+  "name": "in process workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI writing assistant helping to create a book outline.\n\nHere is the book title:\n**{{ $('Get row(s) in sheet').item.json.titles }}**\n\nEditor notes:\n**{{ $('Get row(s) in sheet').item.json.notes_on_outline_before }}**\n\nBelow are web search results that must inform your response:\n---\n{{ $json.web_snippets }}\n---\n\n🎯 Your task:\n- Generate a professional chapter-by-chapter book outline\n- Focus on business impact (as noted by editor)\n- Keep chapters logically ordered and concise\n- Include any emerging trends or insights from the research\n\nFinal output format:\n\n**Book Title:**  \n<book title>  \n\n**Outline:**  \n1. Chapter 1: ...  \n2. Chapter 2: ...  \n3. Chapter 3: ...  \n\nOnly return the formatted outline — no explanations.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -4320,
+        1216
+      ],
+      "id": "7b685245-e5b8-46b1-b0f7-3951adb62a20",
+      "name": "AI Summary Agent",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "tableId": "books",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Get row(s) in sheet').item.json.titles }}"
+            },
+            {
+              "fieldId": "notes_on_outline_before",
+              "fieldValue": "={{ $('Get row(s) in sheet').item.json.notes_on_outline_before }}"
+            },
+            {
+              "fieldId": "outline",
+              "fieldValue": "={{ $json.output }}"
+            },
+            {
+              "fieldId": "status_outline_notes",
+              "fieldValue": "=no"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3968,
+        1216
+      ],
+      "id": "57e80829-7022-4274-90f0-ead39d318b38",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Rm3jrICKowzy_VsbchCXA-7_R61DkrYpo0GVbgznUJE",
+          "mode": "list",
+          "cachedResultName": "Book Inputs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Rm3jrICKowzy_VsbchCXA-7_R61DkrYpo0GVbgznUJE/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Rm3jrICKowzy_VsbchCXA-7_R61DkrYpo0GVbgznUJE/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -4992,
+        1216
+      ],
+      "id": "8d320ee2-ddeb-4030-9247-d9bb780c9c3c",
+      "name": "Get row(s) in sheet",
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ictMNx0HlZwUpB7X",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "books",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get chapter review1').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "outline",
+              "fieldValue": "={{ $json.output }}"
+            },
+            {
+              "fieldId": "status_outline_notes",
+              "fieldValue": "pending"
+            },
+            {
+              "fieldId": "notes_on_outline_after",
+              "fieldValue": "\"\""
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -2720,
+        944
+      ],
+      "id": "64f5ffb0-04fa-4536-b886-ffb622388ca6",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9VZr6Nnz2NBFd1bV",
+          "name": "Supabase account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\nRegenerate the book outline based on this title and notes.\n\nTitle: {{ $json.title }}\n\nOriginal notes: {{ $json.notes_on_outline_before }}\n\nEditor feedback: {{ $json.notes_on_outline_after }}\n\nGive me a numbered chapter outline.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -3072,
+        848
+      ],
+      "id": "0334337c-a808-4bef-acf8-620ff745cf7a",
+      "name": "AI Summary Agent1",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -5216,
+        1216
+      ],
+      "id": "f0dcd5f9-d8da-4df1-a971-0b019edf318b",
+      "name": "When chat message received",
+      "webhookId": "6c3a2c5a-ae79-46cc-a3b6-796ce6786c7f"
+    },
+    {
+      "parameters": {
+        "sendTo": "mansoorshakeel0@gmail.com",
+        "subject": "=Book Outline Ready: {{ $('Get row(s) in sheet').item.json.titles }}",
+        "message": "Outline is ready and needs review",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -3744,
+        1216
+      ],
+      "id": "f685047e-c3b7-4df2-ba6f-6f6d63a73b98",
+      "name": "Send a message1",
+      "webhookId": "d384b4df-cd20-451b-be0e-11727a421964",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9XRTNKJSFwDdVlmf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const bookId = $json.id;           // book ID from previous node\nconst outline = $json.outline;     // outline text from previous node\n\nif (!bookId || !outline) {\n  return [];\n}\n\n// Split by line (adjust as needed)\nconst lines = outline.split('\\n').filter(line =>\n  line.toLowerCase().includes('chapter')\n);\n\nreturn lines.map((line, index) => {\n  return {\n    json: {\n      book_id: bookId,\n      chapter_number: index + 1,\n      chapter_title: line.trim(),\n      chapter_notes_status: 'pending'\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2720,
+        1184
+      ],
+      "id": "bba1ee82-e027-40bb-803b-3392ca56362f",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "tableId": "chapters",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "book_id",
+              "fieldValue": "={{ $json.book_id }}"
+            },
+            {
+              "fieldId": "chapter_number",
+              "fieldValue": "={{ $json.chapter_number }}"
+            },
+            {
+              "fieldId": "chapter_title",
+              "fieldValue": "={{ $json.chapter_title }}"
+            },
+            {
+              "fieldId": "chapter_notes_status",
+              "fieldValue": "={{ $json.chapter_notes_status }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -2496,
+        1184
+      ],
+      "id": "906f81fa-deb4-42c6-b9be-de6850e56855",
+      "name": "Create a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an experienced editor. Summarize the following chapter in 3 to 5 bullet points.\n\n📖 Chapter {{ $('Loop Over Items').item.json.chapter_number }}: {{ $('Loop Over Items').item.json.chapter_title }}\n\n🧾 Chapter Content:\n{{ $json.output }}\n\n---\n\n📝 Summary Instructions:\n- Focus on key events, character decisions, turning points, or insights\n- Use your own words — do not copy sentences\n- The summary will be reused to generate the next chapter, so include plot/logic continuity\n\n🎯 Output Format:\nJust return the summary as bullet points or short paragraphs.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1472,
+        1216
+      ],
+      "id": "1556e487-85dd-4440-9529-19adbf6bcbed",
+      "name": "Generate Chapter Summary",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chapters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $('Create a row2').item.json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "chapter_content",
+              "fieldValue": "={{ $('Generate Chapter Content').item.json.output }}"
+            },
+            {
+              "fieldId": "chapter_notes_status",
+              "fieldValue": "no_notes_needed"
+            },
+            {
+              "fieldId": "chapter_summary",
+              "fieldValue": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        1216
+      ],
+      "id": "b7a051f3-2bbd-46e0-baf8-fa6aaaf7287b",
+      "name": "save chapter content",
+      "alwaysOutputData": false,
+      "credentials": {
+        "supabaseApi": {
+          "id": "9VZr6Nnz2NBFd1bV",
+          "name": "Supabase account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "chapter_summaries",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "chapter_id",
+              "fieldValue": "={{ $('save chapter content').item.json.id }}"
+            },
+            {
+              "fieldId": "summary",
+              "fieldValue": "={{ $('Generate Chapter Summary').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        1344
+      ],
+      "id": "f8082c2b-a254-412b-b2c9-d44d2d1c77c0",
+      "name": "save chapter summary",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -4928,
+        224
+      ],
+      "id": "261ff160-dd2b-4341-9064-03209212d9af",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "HjIeW2fSAOMYfba0",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[\n  {\n    \"role\": \"system\",\n    \"content\": \"You are helping revise a chapter based on editor feedback.\"\n  },\n  {\n    \"role\": \"user\",\n    \"content\": \"Here is the original chapter:\\n\\n{{ $('Get chapter review').item.json.chapter_content }}\\n\\nEditor notes:\\n{{ $('Get chapter review').item.json.chapter_notes }}\\n\\nPlease revise the chapter accordingly.\"\n  }\n]\n\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -4992,
+        0
+      ],
+      "id": "01b1415c-3a5c-4bbf-96e9-5197abc37216",
+      "name": "Generate Chapter Summary1",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chapters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "chapter_content"
+            },
+            {
+              "fieldId": "chapter_notes_status",
+              "fieldValue": "regenerated"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4640,
+        112
+      ],
+      "id": "f3740bbf-7129-44a4-8c33-aa636ce78cc3",
+      "name": "regenrated content",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "chapters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "condition": "eq",
+              "keyValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "chapter_notes_status",
+              "fieldValue": "approved"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4640,
+        352
+      ],
+      "id": "fc294439-1cde-4e80-adc8-2a357ed7af24",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -5216,
+        1680
+      ],
+      "id": "64073d25-e3a2-4730-bf67-983238dbb534",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chapters",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chapter_notes_status",
+              "condition": "eq",
+              "keyValue": "approved"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4992,
+        1680
+      ],
+      "id": "7715dde6-f16b-4c92-9032-a038c53d56e7",
+      "name": "get all approved chapters",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional book author.\n\nWrite Chapter {{ $('Loop Over Items').item.json.chapter_number }} of the book titled \"\".\n\n---\n\n📖 Chapter Title: {{ $('Loop Over Items').item.json.chapter_title }}\n\n{{ $json.chapter_number === 1 ? '' : '🧠 Context from Previous Chapters:\\n' + $json.context_input }}\n\n---\n\n✍️ Instructions:\n- Use a consistent tone:  (e.g., dramatic, academic, humorous)\n- Match the genre:  (e.g., fiction, non-fiction, sci-fi)\n- Expand on the chapter title and structure a meaningful, engaging story or explanation\n- Maintain continuity with previous chapters if context is provided\n\n📝 Output Format:\nOnly return the full written chapter. Do not include explanations or notes.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -1824,
+        1216
+      ],
+      "id": "0890e564-7714-49f0-8441-cfed743073d2",
+      "name": "Generate Chapter Content",
+      "notesInFlow": true,
+      "notes": "Double-click to open"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Sort chapters by chapter_number ascending\nconst sorted = items\n  .map(item => item.json)\n  .sort((a, b) => a.chapter_number - b.chapter_number)\n  .map(ch => ({ json: ch }));\n\nreturn sorted;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4768,
+        1680
+      ],
+      "id": "b1a8ef91-fe33-49aa-a6f8-d93dd0cb1537",
+      "name": "Sort chapters"
+    },
+    {
+      "parameters": {
+        "jsCode": "const chapters = items.map(item => item.json);\n\nconst bookText = chapters.map(ch => {\n  return `Chapter ${ch.chapter_number}: ${ch.chapter_title}\\n\\n${ch.chapter_content}`;\n}).join('\\n\\n---\\n\\n');\n\nreturn [{\n  json: {\n    book_text: bookText\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4544,
+        1680
+      ],
+      "id": "286b7990-f8c4-41ff-9e05-0330fe9c9b40",
+      "name": "combine book text"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "book_text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -4320,
+        1680
+      ],
+      "id": "5b1a5b43-4067-4387-b806-579271d79ac5",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "final_book.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -4096,
+        1680
+      ],
+      "id": "e320abfe-792d-4193-a496-4b873e8e5572",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -3008,
+        1072
+      ],
+      "id": "3a7bd7f7-49f1-428d-83a3-c7c5c05cd3e8",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "0c5ycMuh0pbkzEQ5",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -1760,
+        1440
+      ],
+      "id": "032c3aa4-57d9-4ae7-b94a-09b11d660361",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "0c5ycMuh0pbkzEQ5",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -1408,
+        1440
+      ],
+      "id": "486f6520-103e-476c-bd3f-8addfde9b7a1",
+      "name": "Groq Chat Model2",
+      "credentials": {
+        "groqApi": {
+          "id": "0c5ycMuh0pbkzEQ5",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2f21997c-8f2b-4dd7-8477-34ea72ef273e",
+              "leftValue": "={{ $json.status_outline_notes }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3296,
+        1136
+      ],
+      "id": "3a110dd6-0298-44bc-84ff-755739eea5c8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "99aa47d4-8f8a-4106-9f30-94c25f26f4ec",
+              "leftValue": "={{ $('Get outline review1').item.json.status_outline_notes }}",
+              "rightValue": "no_notes_needed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3008,
+        1280
+      ],
+      "id": "556c0b0f-0c92-4729-b3d5-8c22ad003c58",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2496,
+        1456
+      ],
+      "id": "2b733a88-5f04-4572-8566-abde6e805fa0",
+      "name": "Wait1",
+      "webhookId": "da27c89f-6429-4c70-a467-7d05b1613421"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "books",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "title",
+              "keyValue": "={{ $('Create a row').item.json.title }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -3520,
+        1216
+      ],
+      "id": "6bc59002-2081-40f0-b885-19b643309584",
+      "name": "Get outline review1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9VZr6Nnz2NBFd1bV",
+          "name": "Supabase account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -4416,
+        544
+      ],
+      "id": "7aaeb2b0-c3ec-447e-b300-77dcc6d9bfbb",
+      "name": "Wait",
+      "webhookId": "da27c89f-6429-4c70-a467-7d05b1613421"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2f21997c-8f2b-4dd7-8477-34ea72ef273e",
+              "leftValue": "={{ $json.chapter_notes_status }}",
+              "rightValue": "generated",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -5216,
+        448
+      ],
+      "id": "cf508103-e5bd-4b1a-877c-ab2e3b713207",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "99aa47d4-8f8a-4106-9f30-94c25f26f4ec",
+              "leftValue": "={{ $json.chapter_notes_status }}",
+              "rightValue": "no_notes_needed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4928,
+        448
+      ],
+      "id": "1a307d21-89c2-4549-93ae-a94c2679633e",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "chapters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "id",
+              "keyValue": "={{ $('save chapter content').item.json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -4192,
+        624
+      ],
+      "id": "4f41f3f5-7120-4411-b54f-2e5f06528efa",
+      "name": "Get chapter review1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "9VZr6Nnz2NBFd1bV",
+          "name": "Supabase account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mansoorshakeel0@gmail.com",
+        "subject": "book generated",
+        "message": "=",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -3872,
+        1680
+      ],
+      "id": "da51d491-9b98-4279-bc12-7a9571fe1a34",
+      "name": "Send a message",
+      "webhookId": "36758790-3a8f-478f-965d-c73ccd6c496d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9XRTNKJSFwDdVlmf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mansoorshakeel0@gmail.com",
+        "subject": "Chapter generated → needs notes",
+        "emailType": "text",
+        "message": "Chapter {{ $json.chapter_number }} titled \"{{ $json.chapter_title }}\" is ready.  Please review and provide chapter notes if needed.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -896,
+        1216
+      ],
+      "id": "16fb2b79-eb08-4f8e-856e-2cda16c2c633",
+      "name": "Waiting for chapter notes",
+      "webhookId": "b29d7731-5ab9-4f92-bfa4-58d58df0dd72",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9XRTNKJSFwDdVlmf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mansoorshakeel0@gmail.com",
+        "subject": "Error or pause due to missing input",
+        "message": "=Workflow paused.\n\nMissing or invalid status for: \"{{ $json.chapter_title || $json.title }}\".\nPlease check Supabase and update the status field to continue.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -4640,
+        544
+      ],
+      "id": "1ac342eb-4ae5-4d89-bc10-22f76e3d4049",
+      "name": "Change status",
+      "webhookId": "d489b1e4-b329-4804-b29e-5e5d159af49a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9XRTNKJSFwDdVlmf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "mansoorshakeel0@gmail.com",
+        "subject": "Error or pause due to missing input",
+        "message": "=Workflow paused.\n\nMissing or invalid status for: \"{{ $('Get outline review1').item.json.status_outline_notes }}\".\nPlease check Supabase and update the status field to continue.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -2720,
+        1376
+      ],
+      "id": "66c9e394-86fc-4605-bf5f-0ac2942d440e",
+      "name": "change status",
+      "webhookId": "d489b1e4-b329-4804-b29e-5e5d159af49a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "9XRTNKJSFwDdVlmf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "=q",
+              "value": "={{ $json[\"titles\"] + \" \" + $json[\"notes_on_outline_before\"] }}"
+            },
+            {
+              "name": "api_key",
+              "value": "27f627cc10ad4f368429336f93d600731771be8a275f16474b574fc5fc82a3e5"
+            },
+            {
+              "name": "engine",
+              "value": "google"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -4768,
+        1216
+      ],
+      "id": "1b140825-e643-4586-9d46-2f94fd69bfa4",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = $json[\"organic_results\"] || [];\nconst topSnippets = results.slice(0, 3).map(r => r.snippet).filter(Boolean);\n\nreturn [\n  {\n    json: {\n      web_snippets: topSnippets.join(\"\\n\\n\")\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4544,
+        1216
+      ],
+      "id": "d3bc9dfd-1b05-48c8-a28d-8e48c27623b5",
+      "name": "Extract top Snippets1"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        -4256,
+        1440
+      ],
+      "id": "99ccd358-7699-4b56-a033-baf13d1a8945",
+      "name": "Groq Chat Model3",
+      "credentials": {
+        "groqApi": {
+          "id": "0c5ycMuh0pbkzEQ5",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -2272,
+        1184
+      ],
+      "id": "d6d329ca-8113-46fc-8c7b-54b19f835f59",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "chapters",
+        "returnAll": true,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "chapter_number",
+              "condition": "lt",
+              "keyValue": "={{ $json.chapter_number }}"
+            },
+            {
+              "keyName": "book_id",
+              "condition": "eq",
+              "keyValue": "={{ $json.book_id }}"
+            },
+            {
+              "keyName": "chapter_summary",
+              "condition": "eq"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1760,
+        912
+      ],
+      "id": "6ee791b0-d3b3-411b-b33b-079a85988858",
+      "name": "Get previous summaries1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HBkw0Zupfex1yjXl",
+          "name": "Supabase account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.all();\nconst summaries = input.map(i => ({\n  chapter: i.json.chapter_number,\n  summary: i.json.chapter_summary\n}));\n\nreturn summaries.map(i => ({\n  json: i\n}));\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1408,
+        912
+      ],
+      "id": "cf9d4509-9fc5-44a5-b958-cabfd6966e0d",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"context_input\": \"{{ $input.all().map(i => i.json.chapter_summary).filter(Boolean).join('\\n\\n') }}\"\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1120,
+        912
+      ],
+      "id": "24e4a073-be8d-4ce3-b162-360345d254aa",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a976a84d-048f-4f9a-a7ba-8f3b5661d615",
+              "leftValue": "={{ $('Create a row2').item.json.chapter_number.toString() }}",
+              "rightValue": "1",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2096,
+        1056
+      ],
+      "id": "2c199caf-736f-40ea-b974-9c00a1427cad",
+      "name": "If4"
+    }
+  ],
+  "pinData": {
+    "Get row(s) in sheet": [
+      {
+        "json": {
+          "row_number": 2,
+          "titles": "The Future of AI Writing",
+          "notes_on_outline_before": "Please focus on business impact."
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Summary Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Summary Agent1": {
+      "main": [
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Get outline review1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Create a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Chapter Summary": {
+      "main": [
+        [
+          {
+            "node": "save chapter content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save chapter content": {
+      "main": [
+        [
+          {
+            "node": "Waiting for chapter notes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "save chapter summary": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Chapter Summary1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Chapter Summary1": {
+      "main": [
+        [
+          {
+            "node": "regenrated content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "get all approved chapters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get all approved chapters": {
+      "main": [
+        [
+          {
+            "node": "Sort chapters",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Chapter Content": {
+      "main": [
+        [
+          {
+            "node": "Generate Chapter Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Sort chapters": {
+      "main": [
+        [
+          {
+            "node": "combine book text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "combine book text": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Summary Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Chapter Content",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Generate Chapter Summary",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Summary Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "change status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Get outline review1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get outline review1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get chapter review1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Generate Chapter Summary1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Change status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get chapter review1": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Waiting for chapter notes": {
+      "main": [
+        [
+          {
+            "node": "save chapter summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change status": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "change status": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract top Snippets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract top Snippets1": {
+      "main": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Summary Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get previous summaries1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Generate Chapter Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Generate Chapter Content",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get previous summaries1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "23897798-61bb-4095-a9a4-1d5ffdccc59c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "43d8c9fdb07866d72be05fd8fe9772962cab954760063dc0d9ce6b981d9329ca"
+  },
+  "id": "RcCJNyJ613ydqlDV",
+  "tags": []
+}
