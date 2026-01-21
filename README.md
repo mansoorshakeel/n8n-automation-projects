@@ -2,6 +2,13 @@
 
 Two n8n workflows for real-world automation:
 
+(1) Please find the Loom video where I explain the workflow Automating Book Creation using *AI & Supabase*: Architecture & Demo:      
+    https://www.loom.com/share/f15b5e336a9646a598ed50593a4b7bf4 
+
+(2) Please find the Loom video where I explain the workflow *Automating News Retrieval and Summarization Workflow with AI*:    
+    https://www.loom.com/share/3de0d44c1fe04b6192152d4c849e9ada. 
+    Thank you!
+
 ## 1) Advanced Book Generation with Supabase
 - Use google sheet for outline notes then used serpapi for articles
 - Uses AI to generate long-form book content
